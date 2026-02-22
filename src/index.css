@@ -78,18 +78,43 @@
   .bg-spring-gradient {
     background: linear-gradient(
       135deg,
-      hsl(340, 40%, 96%) 0%,
-      hsl(320, 30%, 95%) 25%,
-      hsl(30, 45%, 96%) 55%,
-      hsl(280, 25%, 96%) 80%,
-      hsl(340, 35%, 96%) 100%
+      hsl(145, 35%, 96%) 0%,
+      hsl(120, 25%, 95%) 20%,
+      hsl(85, 40%, 95%) 45%,
+      hsl(55, 45%, 96%) 65%,
+      hsl(145, 30%, 96%) 85%,
+      hsl(340, 25%, 96%) 100%
     );
   }
 
+  .bg-spring-pattern {
+    position: relative;
+  }
+  .bg-spring-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, hsl(140, 20%, 70%) 0.5px, transparent 0);
+    background-size: 24px 24px;
+    opacity: 0.12;
+  }
+  .bg-spring-pattern::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 80% 50% at 20% 20%, hsl(85, 50%, 90%) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, hsl(145, 40%, 92%) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 60% at 50% 50%, hsl(55, 45%, 94%) 0%, transparent 55%);
+    filter: blur(60px);
+    opacity: 0.6;
+  }
+
   .card-solid {
-    background: hsla(0, 0%, 100%, 0.85);
-    border: 1px solid hsl(340, 25%, 88%);
-    box-shadow: 0 4px 12px 0 hsla(340, 40%, 40%, 0.08), 0 1px 3px 0 hsla(340, 40%, 40%, 0.04);
+    background: hsla(0, 0%, 100%, 0.88);
+    border: 1px solid hsl(140, 25%, 85%);
+    box-shadow: 0 4px 12px 0 hsla(140, 40%, 40%, 0.08), 0 1px 3px 0 hsla(140, 40%, 40%, 0.04);
   }
 
   .btn-spring {

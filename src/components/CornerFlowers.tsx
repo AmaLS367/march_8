@@ -29,26 +29,36 @@ const Leaf = ({ className, flip }: { className?: string; flip?: boolean }) => (
 const CornerFlowers = () => (
   <div className="fixed inset-0 pointer-events-none z-10" aria-hidden="true">
     {/* Top-left */}
-    <div className="absolute top-3 left-3 flex items-end gap-1 opacity-70">
-      <Tulip className="w-7 h-auto -rotate-12" />
-      <Daisy className="w-6 h-6 -mb-1" />
-      <Leaf className="w-4 h-auto rotate-12" />
+    <div className="absolute top-3 left-3 flex items-end gap-1.5 opacity-80">
+      <Tulip className="w-9 h-auto -rotate-12" />
+      <Daisy className="w-8 h-8 -mb-1" />
+      <Leaf className="w-5 h-auto rotate-12" />
     </div>
     {/* Top-right */}
-    <div className="absolute top-3 right-3 flex items-end gap-1 opacity-70">
-      <Leaf className="w-4 h-auto -rotate-12" flip />
-      <Daisy className="w-6 h-6 -mb-1" />
-      <Tulip className="w-7 h-auto rotate-12" />
+    <div className="absolute top-3 right-3 flex items-end gap-1.5 opacity-80">
+      <Leaf className="w-5 h-auto -rotate-12" flip />
+      <Daisy className="w-8 h-8 -mb-1" />
+      <Tulip className="w-9 h-auto rotate-12" />
     </div>
     {/* Bottom-left */}
-    <div className="absolute bottom-8 left-3 flex items-start gap-1 opacity-50">
-      <Daisy className="w-5 h-5" />
-      <Leaf className="w-4 h-auto rotate-45" />
+    <div className="absolute bottom-8 left-3 flex items-start gap-1.5 opacity-60">
+      <Daisy className="w-7 h-7" />
+      <Leaf className="w-5 h-auto rotate-45" />
     </div>
     {/* Bottom-right */}
-    <div className="absolute bottom-8 right-3 flex items-start gap-1 opacity-50">
-      <Leaf className="w-4 h-auto -rotate-45" flip />
-      <Daisy className="w-5 h-5" />
+    <div className="absolute bottom-8 right-3 flex items-start gap-1.5 opacity-60">
+      <Leaf className="w-5 h-auto -rotate-45" flip />
+      <Daisy className="w-7 h-7" />
+    </div>
+    {/* Left edge accent */}
+    <div className="absolute left-2 top-[42%] flex flex-col items-center gap-2 opacity-60">
+      <Daisy className="w-5 h-5 -rotate-6" />
+      <Leaf className="w-4 h-auto" />
+    </div>
+    {/* Right edge accent */}
+    <div className="absolute right-2 top-[38%] flex flex-col items-center gap-2 opacity-60">
+      <Leaf className="w-4 h-auto" flip />
+      <Daisy className="w-5 h-5 rotate-6" />
     </div>
   </div>
 );

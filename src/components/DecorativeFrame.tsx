@@ -9,10 +9,10 @@ const DecorativeFrame = () => (
     {/* Vine curves along edges */}
     <path
       d="M20 20 Q200 5 380 20 Q395 250 380 480 Q200 495 20 480 Q5 250 20 20Z"
-      stroke="hsl(140,35%,65%)"
-      strokeWidth="1.2"
+      stroke="hsl(140,38%,58%)"
+      strokeWidth="1.4"
       strokeDasharray="6 4"
-      opacity="0.4"
+      opacity="0.5"
     />
     {/* Small leaves along the vine */}
     {[
@@ -22,7 +22,7 @@ const DecorativeFrame = () => (
       { x: 10, y: 400, r: -80 }, { x: 6, y: 250, r: -95 }, { x: 8, y: 120, r: -100 },
     ].map(({ x, y, r }, i) => (
       <g key={i} transform={`translate(${x},${y}) rotate(${r})`}>
-        <path d="M0 0C3-5 8-6 10-3C12 0 8 4 5 6C2 8-2 4 0 0Z" fill="hsl(140,40%,55%)" opacity="0.35" />
+        <path d="M0 0C3-5 8-6 10-3C12 0 8 4 5 6C2 8-2 4 0 0Z" fill="hsl(140,42%,50%)" opacity="0.45" />
       </g>
     ))}
     {/* Tiny flowers at corners */}

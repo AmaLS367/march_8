@@ -19,6 +19,7 @@ const Index = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const managerRef = useRef<EffectManager | null>(null);
   const [phrase, setPhrase] = useState<Phrase>(defaultPhrase);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const historyRef = useRef<number[]>([]);
   const reducedMotion = useRef(false);
 
@@ -39,10 +40,16 @@ const Index = () => {
   }, []);
 
   const handleClick = useCallback(() => {
-    setPhrase(getRandomPhrase());
-    if (!reducedMotion.current) {
-      managerRef.current?.startRandom();
+    if (reducedMotion.current) {
+      setPhrase(getRandomPhrase());
+      return;
     }
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setPhrase(getRandomPhrase());
+      managerRef.current?.startRandom();
+      setTimeout(() => setIsTransitioning(false), 120);
+    }, 140);
   }, [getRandomPhrase]);
 
   const handleCopy = useCallback(async () => {
@@ -61,16 +68,32 @@ const Index = () => {
   }, [phrase]);
 
   return (
-    <div className="min-h-screen bg-spring-gradient relative overflow-hidden">
+    <div className="min-h-screen bg-spring-gradient bg-spring-pattern relative overflow-hidden">
+      <AnimatePresence>
+        {isTransitioning && (
+          <motion.div
+            key="transition-overlay"
+            className="fixed inset-0 z-30 pointer-events-none"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.15 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            style={{
+              background: 'radial-gradient(circle at center, rgba(255,230,200,0.7) 0%, rgba(200,255,220,0.5) 40%, rgba(255,200,220,0.3) 100%)',
+            }}
+            aria-hidden
+          />
+        )}
+      </AnimatePresence>
       <AnimationCanvas ref={canvasRef} />
       <CornerFlowers />
 
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 py-8 gap-5">
         {/* Header */}
         <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: -24, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.05 }}
           className="text-center mb-2"
         >
           <h1 className="text-4xl md:text-6xl font-bold text-foreground flex items-center justify-center gap-2">

@@ -4,10 +4,10 @@ type StopFn = () => void;
 type EffectFn = (ctx: CanvasRenderingContext2D, w: number, h: number) => StopFn;
 
 const COLORS: [number, number, number][] = [
-  [236, 72, 153], [244, 114, 182], [251, 146, 60],
-  [167, 139, 250], [252, 211, 77], [248, 113, 113],
-  [253, 164, 175], [196, 181, 253], [249, 168, 212],
-  [252, 165, 165],
+  [225, 55, 140], [240, 95, 175], [255, 130, 50],
+  [155, 120, 245], [255, 200, 50], [245, 95, 95],
+  [255, 150, 170], [180, 165, 255], [255, 155, 205],
+  [255, 140, 140], [120, 200, 120], [255, 180, 100],
 ];
 
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
@@ -125,21 +125,21 @@ function drawDaisy(ctx: CanvasRenderingContext2D, x: number, y: number, size: nu
 
 // 1. BouquetReveal
 function bouquetReveal(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const stems = Array.from({ length: 7 }, (_, i) => ({
-    x: w / 2 + (i - 3) * 30,
+  const stems = Array.from({ length: 11 }, (_, i) => ({
+    x: w / 2 + (i - 5) * 28,
     startY: h * 0.85,
     endY: h * 0.35 + rand(-20, 20),
     color: pick(COLORS),
-    delay: i * 150,
+    delay: i * 120,
     openPhase: 0,
   }));
-  const sparkles = Array.from({ length: 40 }, () => ({
-    x: w / 2 + rand(-120, 120), y: h * 0.35 + rand(-40, 40),
-    size: rand(2, 5), phase: rand(0, Math.PI * 2), color: pick(COLORS),
+  const sparkles = Array.from({ length: 70 }, () => ({
+    x: w / 2 + rand(-180, 180), y: h * 0.35 + rand(-60, 60),
+    size: rand(2.5, 6.5), phase: rand(0, Math.PI * 2), color: pick(COLORS),
   }));
   let id: number;
   const start = performance.now();
-  const dur = 5000;
+  const dur = 5800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -156,7 +156,7 @@ function bouquetReveal(ctx: CanvasRenderingContext2D, w: number, h: number): Sto
       ctx.stroke();
       if (t > 0.6) {
         const open = Math.min(1, (t - 0.6) / 0.4);
-        const sz = 18 * open;
+        const sz = 24 * open;
         drawTulip(ctx, s.x, curY - sz * 0.5, sz, s.color, fade);
       }
     }
@@ -177,14 +177,14 @@ function bouquetReveal(ctx: CanvasRenderingContext2D, w: number, h: number): Sto
 // 2. PetalRain (3-layer parallax)
 function petalRain(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
   const layers = [
-    { count: 30, speedMul: 0.5, sizeMul: 0.6, opacity: 0.4 },
-    { count: 40, speedMul: 1.0, sizeMul: 1.0, opacity: 0.6 },
-    { count: 30, speedMul: 1.8, sizeMul: 1.4, opacity: 0.8 },
+    { count: 50, speedMul: 0.5, sizeMul: 0.75, opacity: 0.45 },
+    { count: 65, speedMul: 1.0, sizeMul: 1.2, opacity: 0.65 },
+    { count: 50, speedMul: 1.8, sizeMul: 1.6, opacity: 0.85 },
   ];
   const particles = layers.flatMap(l =>
     Array.from({ length: l.count }, () => ({
       x: rand(0, w), y: rand(-h, 0),
-      speed: rand(1, 3) * l.speedMul, size: rand(8, 14) * l.sizeMul,
+      speed: rand(1, 3) * l.speedMul, size: rand(10, 18) * l.sizeMul,
       rot: rand(0, Math.PI * 2), rotSpeed: rand(-0.03, 0.03),
       color: pick(COLORS), drift: rand(0.3, 1.5), driftPhase: rand(0, Math.PI * 2),
       opacity: l.opacity,
@@ -192,7 +192,7 @@ function petalRain(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn 
   );
   let id: number;
   const start = performance.now();
-  const dur = 5000;
+  const dur = 5800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -214,14 +214,14 @@ function petalRain(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn 
 
 // 3. HeartBurst
 function heartBurst(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const particles = Array.from({ length: 90 }, () => ({
+  const particles = Array.from({ length: 150 }, () => ({
     x: w / 2, y: h / 2,
-    vx: rand(-9, 9), vy: rand(-14, -3),
-    size: rand(8, 20), color: pick(COLORS), opacity: 1,
+    vx: rand(-11, 11), vy: rand(-16, -4),
+    size: rand(11, 28), color: pick(COLORS), opacity: 1,
   }));
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -241,15 +241,15 @@ function heartBurst(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn
 
 // 4. FloralConfetti
 function floralConfetti(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const particles = Array.from({ length: 120 }, () => ({
-    x: w / 2 + rand(-100, 100), y: h * 0.7,
-    vx: rand(-6, 6), vy: rand(-15, -7),
-    size: rand(6, 14), rot: rand(0, Math.PI * 2), rotSpeed: rand(-0.1, 0.1),
+  const particles = Array.from({ length: 200 }, () => ({
+    x: w / 2 + rand(-120, 120), y: h * 0.7,
+    vx: rand(-7, 7), vy: rand(-16, -8),
+    size: rand(8, 18), rot: rand(0, Math.PI * 2), rotSpeed: rand(-0.1, 0.1),
     color: pick(COLORS), isHeart: Math.random() > 0.5,
   }));
   let id: number;
   const start = performance.now();
-  const dur = 4500;
+  const dur = 5300;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -271,19 +271,19 @@ function floralConfetti(ctx: CanvasRenderingContext2D, w: number, h: number): St
 // 5. BloomFrame
 function bloomFrame(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
   const cx = w / 2, cy = h / 2;
-  const rx = Math.min(w * 0.4, 200), ry = Math.min(h * 0.3, 160);
-  const count = 50;
+  const rx = Math.min(w * 0.45, 240), ry = Math.min(h * 0.35, 190);
+  const count = 75;
   const flowers = Array.from({ length: count }, (_, i) => {
     const angle = (Math.PI * 2 / count) * i;
     return {
       tx: cx + Math.cos(angle) * rx,
       ty: cy + Math.sin(angle) * ry,
-      size: rand(8, 14), color: pick(COLORS), delay: i * 60,
+      size: rand(11, 18), color: pick(COLORS), delay: i * 45,
     };
   });
   let id: number;
   const start = performance.now();
-  const dur = 4500;
+  const dur = 5300;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -303,15 +303,15 @@ function bloomFrame(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn
 // 6. SparkleOrbit
 function sparkleOrbit(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
   const cx = w / 2, cy = h / 2;
-  const sparks = Array.from({ length: 50 }, () => ({
+  const sparks = Array.from({ length: 80 }, () => ({
     angle: rand(0, Math.PI * 2),
-    radius: rand(80, 200),
+    radius: rand(90, 240),
     speed: rand(0.015, 0.04) * (Math.random() > 0.5 ? 1 : -1),
-    size: rand(2, 6), color: pick(COLORS),
+    size: rand(3, 8), color: pick(COLORS),
   }));
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -333,14 +333,14 @@ function sparkleOrbit(ctx: CanvasRenderingContext2D, w: number, h: number): Stop
 
 // 7. DaisyFall
 function daisyFall(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const daisies = Array.from({ length: 35 }, () => ({
+  const daisies = Array.from({ length: 55 }, () => ({
     x: rand(0, w), y: rand(-h * 0.5, 0),
-    speed: rand(1, 3), size: rand(10, 22),
+    speed: rand(1, 3), size: rand(14, 28),
     rot: rand(0, Math.PI * 2), rotSpeed: rand(-0.025, 0.025),
   }));
   let id: number;
   const start = performance.now();
-  const dur = 5000;
+  const dur = 5800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -361,17 +361,17 @@ function daisyFall(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn 
 
 // 8. TulipPop
 function tulipPop(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const tulips = Array.from({ length: 12 }, (_, i) => ({
-    x: w * 0.15 + (w * 0.7 / 11) * i,
+  const tulips = Array.from({ length: 18 }, (_, i) => ({
+    x: w * 0.12 + (w * 0.76 / 17) * i,
     baseY: h + 20,
     peakY: h * 0.3 + rand(-40, 40),
-    size: rand(18, 30),
+    size: rand(24, 40),
     color: pick(COLORS),
-    delay: rand(0, 800),
+    delay: rand(0, 700),
   }));
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -410,7 +410,7 @@ function ribbonSweep(ctx: CanvasRenderingContext2D, w: number, h: number): StopF
   const trail: { x: number; y: number; size: number; rot: number; color: [number, number, number]; born: number }[] = [];
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -427,10 +427,10 @@ function ribbonSweep(ctx: CanvasRenderingContext2D, w: number, h: number): StopF
     ctx.quadraticCurveTo(rx, ry + 15, rx + 60, ry - 20);
     ctx.stroke();
     // Drop petals
-    if (elapsed % 50 < 17 && trail.length < 200) {
+    if (elapsed % 50 < 17 && trail.length < 320) {
       trail.push({
         x: rx + rand(-30, 30), y: ry + rand(-20, 20),
-        size: rand(6, 12), rot: rand(0, Math.PI * 2),
+        size: rand(8, 15), rot: rand(0, Math.PI * 2),
         color: pick(COLORS), born: elapsed,
       });
     }
@@ -451,7 +451,7 @@ function ribbonSweep(ctx: CanvasRenderingContext2D, w: number, h: number): StopF
 function shineWipe(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
   let id: number;
   const start = performance.now();
-  const dur = 2500;
+  const dur = 3200;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
@@ -477,28 +477,28 @@ function heartPulse(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn
   const cx = w / 2, cy = h / 2;
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   let shatterParts: { x: number; y: number; vx: number; vy: number; size: number; color: [number, number, number] }[] = [];
   let shattered = false;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
     ctx.clearRect(0, 0, w, h);
-    if (elapsed < 2000) {
+    if (elapsed < 2400) {
       const scale = 1 + Math.sin(elapsed / 500 * Math.PI) * 0.25;
-      const size = 55 * scale;
+      const size = 70 * scale;
       ctx.fillStyle = rgba([236, 72, 153], 0.85);
       drawHeart(ctx, cx, cy - size / 2, size);
     } else {
       if (!shattered) {
         shattered = true;
-        shatterParts = Array.from({ length: 80 }, () => ({
-          x: cx + rand(-25, 25), y: cy + rand(-15, 15),
-          vx: rand(-8, 8), vy: rand(-10, 3),
-          size: rand(4, 12), color: pick(COLORS),
+        shatterParts = Array.from({ length: 120 }, () => ({
+          x: cx + rand(-30, 30), y: cy + rand(-20, 20),
+          vx: rand(-9, 9), vy: rand(-11, 4),
+          size: rand(5, 15), color: pick(COLORS),
         }));
       }
-      const p2 = (elapsed - 2000) / 2000;
+      const p2 = (elapsed - 2400) / 2400;
       for (const p of shatterParts) {
         p.x += p.vx; p.vy += 0.2; p.y += p.vy;
         const opacity = Math.max(0, 1 - p2 * 1.5);
@@ -514,15 +514,15 @@ function heartPulse(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn
 
 // 12. SpringWave
 function springWave(ctx: CanvasRenderingContext2D, w: number, h: number): StopFn {
-  const particles = Array.from({ length: 80 }, () => ({
+  const particles = Array.from({ length: 130 }, () => ({
     baseX: rand(-50, w + 50),
     y: rand(h * 0.1, h * 0.9),
-    size: rand(7, 15), rot: rand(0, Math.PI * 2),
+    size: rand(10, 20), rot: rand(0, Math.PI * 2),
     color: pick(COLORS), offset: rand(0, 200),
   }));
   let id: number;
   const start = performance.now();
-  const dur = 4000;
+  const dur = 4800;
   const animate = (now: number) => {
     const elapsed = now - start;
     if (elapsed > dur) { ctx.clearRect(0, 0, w, h); return; }
