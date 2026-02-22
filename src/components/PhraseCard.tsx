@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Copy, Share2 } from 'lucide-react';
 import type { Phrase } from '@/data/phrases';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const PhraseCard = ({ phrase, onCopy, onShare }: Props) => {
+  const { t } = useTranslation();
   const canShare = typeof navigator !== 'undefined' && !!navigator.share;
 
   return (
@@ -26,17 +28,23 @@ const PhraseCard = ({ phrase, onCopy, onShare }: Props) => {
       </p>
       <div className="flex gap-3 justify-center mt-4 relative z-10">
         <button
-          onClick={(e) => { e.stopPropagation(); onCopy(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onCopy();
+          }}
           className="p-2 rounded-full text-muted-foreground hover:text-foreground transition-colors"
-          title="Скопировать"
+          title={t('phraseCard.copy')}
         >
           <Copy size={16} />
         </button>
         {canShare && (
           <button
-            onClick={(e) => { e.stopPropagation(); onShare(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onShare();
+            }}
             className="p-2 rounded-full text-muted-foreground hover:text-foreground transition-colors"
-            title="Поделиться"
+            title={t('phraseCard.share')}
           >
             <Share2 size={16} />
           </button>
